@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+:root {
+  --void: #05050a;
+  --card: #0a0a12;
+  --card-glass: rgba(15, 15, 25, 0.7);
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --cyan: #00e5ff;
+  --violet: #8b5cf6;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  --color-void: var(--void);
+  --color-card: var(--card);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent-cyan: var(--cyan);
+  --color-accent-violet: var(--violet);
+  --color-background: var(--void);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .starfield {
+    animation: none !important;
+  }
+
+  .kinetic-gradient {
+    animation: none !important;
+    background-position: 0% 50%;
+  }
+}
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+}
+
+.glass {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 20px 50px -30px rgba(0, 0, 0, 0.85);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.7rem 1.25rem;
+  font-weight: 500;
+  color: #041016;
+  background: linear-gradient(135deg, #00e5ff 0%, #67e8f9 40%, #8b5cf6 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+    0 10px 30px -10px rgba(0, 229, 255, 0.45);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 14px 36px -10px rgba(139, 92, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.75);
+  outline-offset: 3px;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.7rem 1.25rem;
+  font-weight: 500;
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-ghost:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.75);
+  outline-offset: 3px;
+}
+
+.field {
+  width: 100%;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 10, 18, 0.75);
+  padding: 0.7rem 0.9rem;
+  color: var(--text);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.field::placeholder {
+  color: rgba(148, 163, 184, 0.75);
+}
+
+.field:focus {
+  border-color: rgba(0, 229, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.12);
+}
+
+.kinetic-gradient {
+  background: linear-gradient(
+    110deg,
+    #f1f5f9 0%,
+    #00e5ff 28%,
+    #8b5cf6 55%,
+    #00e5ff 78%,
+    #f1f5f9 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: kinetic-shift 8s ease-in-out infinite;
+}
+
+@keyframes kinetic-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.starfield {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 80px 120px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 160px 60px, rgba(0, 229, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 240px 180px, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 320px 90px, rgba(139, 92, 246, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 400px 200px, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 480px 40px, rgba(0, 229, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 560px 150px, rgba(255, 255, 255, 0.35), transparent);
+  background-size: 600px 240px;
+  animation: drift 90s linear infinite;
+}
+
+@keyframes drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 600px 240px;
+  }
+}
+
+::selection {
+  background: rgba(0, 229, 255, 0.28);
+  color: #fff;
+}
