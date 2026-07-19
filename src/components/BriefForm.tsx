@@ -15,6 +15,70 @@ const complexityOptions: { value: Complexity; label: string }[] = [
   { value: "ambitious", label: "Ambitious" },
 ];
 
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#00E5FF]/85">
+      {children}
+    </h3>
+  );
+}
+
+function ContributionItem({
+  agent,
+  role,
+  contribution,
+  defaultOpen,
+}: {
+  agent: string;
+  role: string;
+  contribution: string;
+  defaultOpen: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <li className="rounded-xl border border-white/10 bg-white/[0.03]">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="focus-ring flex w-full items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left"
+        aria-expanded={open}
+      >
+        <span className="font-display text-base font-semibold text-text">
+          {agent}
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="hidden text-xs text-muted sm:inline">{role}</span>
+          <span
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-white/15 text-xs text-muted"
+            aria-hidden
+          >
+            {open ? "−" : "+"}
+          </span>
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <p className="border-t border-white/10 px-4 pb-4 pt-3 text-sm leading-relaxed text-muted">
+              <span className="mb-1 block text-xs text-muted/80 sm:hidden">
+                {role}
+              </span>
+              {contribution}
+            </p>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </li>
+  );
+}
+
 export function BriefForm() {
   const reduce = useReducedMotion();
   const [idea, setIdea] = useState("");
@@ -60,7 +124,7 @@ export function BriefForm() {
           description="Describe an idea. We’ll return a structured multi-agent response — API-ready shape, client-side simulation for v1."
         />
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid items-start gap-8 lg:grid-cols-2">
           <motion.form
             onSubmit={onSubmit}
             noValidate
@@ -125,7 +189,7 @@ export function BriefForm() {
                   return (
                     <label
                       key={opt.value}
-                      className={`cursor-pointer rounded-full border px-3 py-1.5 text-sm transition ${
+                      className={`focus-within:ring-2 focus-within:ring-[#00E5FF]/70 focus-within:ring-offset-2 focus-within:ring-offset-void cursor-pointer rounded-full border px-3 py-1.5 text-sm transition ${
                         active
                           ? "border-[#00E5FF]/40 bg-[#00E5FF]/15 text-cyan-50"
                           : "border-white/10 bg-white/5 text-muted hover:border-white/20 hover:text-text"
@@ -171,7 +235,10 @@ export function BriefForm() {
                   exit={{ opacity: 0 }}
                   className="glass flex h-full min-h-[320px] flex-col items-center justify-center rounded-2xl p-8 text-center"
                 >
-                  <div className="mb-4 h-10 w-10 animate-spin rounded-full border-2 border-[#00E5FF]/30 border-t-[#00E5FF]" />
+                  <div
+                    className="mb-4 h-10 w-10 rounded-full border-2 border-[#00E5FF]/30 border-t-[#00E5FF] motion-safe:animate-spin"
+                    aria-hidden
+                  />
                   <p className="font-display text-lg text-text">
                     The Collective is assembling…
                   </p>
@@ -185,59 +252,65 @@ export function BriefForm() {
                   initial={reduce ? false : { opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="glass rounded-2xl p-6 sm:p-8"
+                  className="glass max-h-[min(70vh,720px)] overflow-y-auto rounded-2xl p-6 sm:p-8"
                 >
-                  <p className="text-sm leading-relaxed text-[#00E5FF]/90">
-                    {response.summary}
-                  </p>
+                  <section className="pb-6">
+                    <SectionLabel>Summary</SectionLabel>
+                    <p className="text-sm leading-relaxed text-text/95 sm:text-[0.95rem]">
+                      {response.summary}
+                    </p>
+                  </section>
 
-                  <div className="mt-5">
-                    <h3 className="text-xs font-medium uppercase tracking-wider text-muted">
-                      Process
-                    </h3>
-                    <ol className="mt-2 space-y-1.5">
-                      {response.process.map((step) => (
+                  <section className="border-t border-white/10 py-6">
+                    <SectionLabel>Process</SectionLabel>
+                    <ol className="space-y-2.5">
+                      {response.process.map((step, i) => (
                         <li
                           key={step}
-                          className="text-sm text-muted before:mr-2 before:text-[#8B5CF6] before:content-['→']"
+                          className="flex gap-3 text-sm leading-relaxed text-muted"
                         >
-                          {step}
+                          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#8B5CF6]/35 bg-[#8B5CF6]/10 text-[10px] font-semibold text-violet-200">
+                            {i + 1}
+                          </span>
+                          <span>{step}</span>
                         </li>
                       ))}
                     </ol>
-                  </div>
+                  </section>
 
-                  <ul className="mt-6 space-y-5">
-                    {response.contributions.map((c) => (
-                      <li
-                        key={c.agent}
-                        className="border-t border-white/10 pt-5 first:border-t-0 first:pt-0"
-                      >
-                        <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <h3 className="font-display text-lg font-semibold text-text">
-                            {c.agent}
-                          </h3>
-                          <span className="text-xs text-muted">{c.role}</span>
-                        </div>
-                        <p className="mt-2 text-sm leading-relaxed text-muted">
-                          {c.contribution}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-6 rounded-xl border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-4 py-3">
-                    <h3 className="text-xs font-medium uppercase tracking-wider text-violet-200">
-                      Next steps
-                    </h3>
-                    <ul className="mt-2 space-y-1.5">
-                      {response.nextSteps.map((step) => (
-                        <li key={step} className="text-sm text-violet-100/90">
-                          • {step}
-                        </li>
+                  <section className="border-t border-white/10 py-6">
+                    <SectionLabel>Contributions</SectionLabel>
+                    <ul className="space-y-3">
+                      {response.contributions.map((c, i) => (
+                        <ContributionItem
+                          key={c.agent}
+                          agent={c.agent}
+                          role={c.role}
+                          contribution={c.contribution}
+                          defaultOpen={i === 0}
+                        />
                       ))}
                     </ul>
-                  </div>
+                  </section>
+
+                  <section className="border-t border-white/10 pt-6">
+                    <div className="rounded-xl border border-[#8B5CF6]/25 bg-[#8B5CF6]/10 px-4 py-4">
+                      <SectionLabel>Next steps</SectionLabel>
+                      <ul className="space-y-2">
+                        {response.nextSteps.map((step) => (
+                          <li
+                            key={step}
+                            className="flex gap-2 text-sm leading-relaxed text-violet-100/90"
+                          >
+                            <span className="text-violet-300" aria-hidden>
+                              •
+                            </span>
+                            <span>{step}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </section>
                 </motion.div>
               ) : (
                 <motion.div

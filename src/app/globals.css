@@ -43,6 +43,10 @@ html {
     animation: none !important;
     background-position: 0% 50%;
   }
+
+  .motion-safe\:animate-spin {
+    animation: none !important;
+  }
 }
 
 body {
@@ -53,6 +57,18 @@ body {
 
 .font-display {
   font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+}
+
+/* High-visibility cyan focus for interactive controls */
+.focus-ring:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.85);
+  outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid rgba(0, 229, 255, 0.85);
+  outline-offset: 3px;
 }
 
 .glass {

@@ -2,6 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 
+const headlineWords = ["Four", "Minds.", "One", "Mission."];
+
 export function Hero() {
   const reduce = useReducedMotion();
 
@@ -21,20 +23,35 @@ export function Hero() {
             Multi-agent studio
           </motion.p>
 
-          <motion.h1
-            className="font-display text-4xl font-semibold leading-[1.08] tracking-tight text-text sm:text-5xl md:text-6xl lg:text-7xl"
-            initial={reduce ? false : { opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="kinetic-gradient">Four Minds. One Mission.</span>
-          </motion.h1>
+          <h1 className="font-display text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            <span className="sr-only">Four Minds. One Mission.</span>
+            <span
+              aria-hidden
+              className="kinetic-gradient flex flex-wrap gap-x-[0.28em]"
+            >
+              {headlineWords.map((word, i) => (
+                <motion.span
+                  key={word + i}
+                  className="inline-block"
+                  initial={reduce ? false : { opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.55,
+                    delay: reduce ? 0 : 0.12 + i * 0.09,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </span>
+          </h1>
 
           <motion.p
             className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl"
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.22 }}
+            transition={{ duration: 0.7, delay: reduce ? 0 : 0.55 }}
           >
             The Grok Collective is a studio of complementary intelligences —
             strategy, architecture, design, and interaction — building together
@@ -45,7 +62,7 @@ export function Hero() {
             className="mt-10 flex flex-wrap items-center gap-4"
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.32 }}
+            transition={{ duration: 0.65, delay: reduce ? 0 : 0.65 }}
           >
             <a href="#agents" className="btn-primary">
               Meet the Collective
@@ -59,7 +76,7 @@ export function Hero() {
             className="mt-14 grid max-w-lg grid-cols-3 gap-4 border-t border-white/10 pt-8"
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.45 }}
+            transition={{ duration: 0.8, delay: reduce ? 0 : 0.8 }}
           >
             {[
               { label: "Agents", value: "4" },

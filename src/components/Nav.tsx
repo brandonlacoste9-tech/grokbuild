@@ -35,9 +35,9 @@ export function Nav() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a
           href="#top"
-          className="group flex items-center gap-2 font-display text-sm font-semibold tracking-wide text-text"
+          className="focus-ring group flex items-center gap-2 rounded-lg font-display text-sm font-semibold tracking-wide text-text"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-400/30 bg-cyan-400/10 text-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.25)] transition group-hover:border-cyan-300/50">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#00E5FF]/30 bg-[#00E5FF]/10 text-cyan-200 shadow-[0_0_20px_rgba(0,229,255,0.25)] transition group-hover:border-[#00E5FF]/50">
             GC
           </span>
           <span className="hidden sm:inline">The Grok Collective</span>
@@ -48,7 +48,7 @@ export function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-full px-3 py-1.5 text-sm text-muted transition hover:bg-white/5 hover:text-text"
+              className="focus-ring rounded-full px-3 py-1.5 text-sm text-muted transition hover:bg-white/5 hover:text-text"
             >
               {link.label}
             </a>
